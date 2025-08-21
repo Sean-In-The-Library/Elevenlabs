@@ -68,13 +68,24 @@ def main():
         st.header("🎛️ Controls")
         
         # API Status
-        api_key = st.secrets.get("ELEVENLABS_API_KEY") or os.getenv("ELEVENLABS_API_KEY")
-        if api_key and api_key != "your-api-key-here":
-            st.success("✅ API key loaded")
-        else:
-            st.error("❌ API key not found")
-            st.info("Set ELEVENLABS_API_KEY in .streamlit/secrets.toml or .env file")
-            return
+        st.write("🔍 Debug: Testing API connection...")
+        st.write(f"🔍 Debug: Environment ELEVENLABS_API_KEY: {os.getenv('ELEVENLABS_API_KEY', 'NOT_SET')[:10] if os.getenv('ELEVENLABS_API_KEY') else 'NOT_SET'}...")
+        st.write(f"🔍 Debug: Streamlit secrets ELEVENLABS_API_KEY: {st.secrets.get('ELEVENLABS_API_KEY', 'NOT_SET')[:10] if st.secrets.get('ELEVENLABS_API_KEY') else 'NOT_SET'}...")
+        try:
+            # Try to get a voice to test API connectivity
+            st.write("🔍 Debug: Calling list_voices...")
+            voices = list_voices(page_size=1)
+            st.write(f"🔍 Debug: Got {len(voices) if voices else 0} voices")
+            if voices:
+                st.success("✅ API connected - voices available")
+            else:
+                st.warning("⚠️ API connected but no voices found")
+        except Exception as e:
+            st.error("❌ API connection failed")
+            st.info("Check ELEVENLABS_API_KEY in .streamlit/secrets.toml or .env file")
+            st.code(str(e))
+            st.write(f"🔍 Debug: Exception type: {type(e).__name__}")
+            st.write(f"🔍 Debug: Exception details: {e}")
         
         # Model Selection
         st.subheader("Model")

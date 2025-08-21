@@ -73,7 +73,7 @@ class TestElevenBackend:
         mock_secrets.get.return_value = "your-api-key-here"
         mock_getenv.return_value = None
         
-        with pytest.raises(ValueError, match="Please set your actual ElevenLabs API key"):
+        with pytest.raises(ValueError, match="ELEVENLABS_API_KEY not found in environment or secrets"):
             get_client()
     
     @patch('eleven_backend.get_client')

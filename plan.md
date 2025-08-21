@@ -32,11 +32,12 @@ Build a minimal, OU-Law-branded Streamlit app that lets us:
 6) Frontend renders playback using `st.audio` and exposes a Download button.
 
 ### UX notes
-- Single column layout with a compact header that reads “OU Law TTS Bench (Internal)”.
+- Single column layout with a compact header that reads "OU Law TTS Bench (Internal)".
 - Sidebar for models, voices, output format, and settings. Main pane for text and results.
 - Brand: use Oklahoma Crimson with neutral grays and white. Do not use Cream in digital UI per OU guidance.
 
 ### Configuration
+- **IMPORTANT**: Environment variable must be named exactly `ELEVENLABS_API_KEY` (not ELEVENLABS_API_KEY or any other variation)
 - Secrets: `.streamlit/secrets.toml` contains `ELEVENLABS_API_KEY`. Never commit secrets.
 - Theme: `.streamlit/config.toml` sets primary color to OU Crimson and neutral backgrounds.
 - Dependencies: `streamlit`, `elevenlabs` SDK or `requests/httpx`, `python-dotenv` optional.
@@ -52,7 +53,7 @@ Build a minimal, OU-Law-branded Streamlit app that lets us:
 - Call backend, show spinner, handle errors, and display audio.
 
 ### Error handling and logging
-- 401 or 403 → surface a clear “API key missing or invalid” error.
+- 401 or 403 → surface a clear "API key missing or invalid" error.
 - Unknown voice or model → disable Generate and show a brief tip.
 - Always allow download if inline playback fails.
 
