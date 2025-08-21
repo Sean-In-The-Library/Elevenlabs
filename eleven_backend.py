@@ -32,7 +32,7 @@ def get_client() -> ElevenLabs:
     api_key = None
     try:
         api_key = st.secrets.get("ELEVENLABS_API_KEY")
-    except:
+    except (AttributeError, FileNotFoundError, KeyError):
         pass  # Not running in Streamlit
     
     # If no key from secrets, try environment
@@ -137,7 +137,8 @@ def synthesize(
     output_format: str = "mp3_44100_128",
     voice_settings: Optional[Dict[str, Any]] = None,
     seed: Optional[int] = None,
-    language_code: Optional[str] = None
+    language_code: Optional[str] = None,
+    speed: Optional[float] = None
 ) -> Tuple[bytes, str]:
     """
     Convert text to speech using ElevenLabs API.
@@ -150,6 +151,7 @@ def synthesize(
         voice_settings (Dict[str, Any], optional): Voice settings overrides
         seed (int, optional): Random seed for consistency
         language_code (str, optional): Language code for multilingual models
+        speed (float, optional): Speech rate multiplier (0.5 to 1.5)
         
     Returns:
         Tuple[bytes, str]: Audio bytes and MIME type
@@ -167,6 +169,10 @@ def synthesize(
             "style": voice_settings.get("style", 0.0) if voice_settings else 0.0,
             "use_speaker_boost": voice_settings.get("use_speaker_boost", True) if voice_settings else True
         }
+        
+        # Add speed if provided
+        if speed is not None:
+            settings["speed"] = speed
         
         # Generate audio
         audio_generator = elevenlabs_client.text_to_speech.convert(

@@ -69,7 +69,6 @@ coverage.xml
 .hypothesis/
 
 # Streamlit secrets and local config
-.streamlit/secrets.toml
 .streamlit/secrets.toml.*
 
 # Audio files (generated content)

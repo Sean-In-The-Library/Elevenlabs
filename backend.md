@@ -8,8 +8,7 @@ A small Python module the frontend calls to:
 - List voices with the v2 endpoint
 - Fetch default voice settings
 - Convert text to speech with overrideable `voice_settings`, `model_id`, and `output_format` query param
-References for endpoints and fields are from ElevenLabs API docs.  [oai_citation:12‡ElevenLabs](https://elevenlabs.io/docs/api-reference/authentication)
-
+References for endpoints and fields are from ElevenLabs API docs: https://elevenlabs.io/docs/api-reference/authentication
 ### Files this plan will produce
 - `eleven_backend.py` — functions listed below
 - `tests/test_eleven_backend.py` — minimal functional tests using a mocked HTTP client

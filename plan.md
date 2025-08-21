@@ -16,7 +16,7 @@ Build a minimal, OU-Law-branded Streamlit app that lets us:
 
 ### Deliverables
 - `frontend.md` with instructions to generate `app.py` and `.streamlit/config.toml`
-- `backen.md` with instructions to generate `eleven_backend.py` and tests
+- `backend.md` with instructions to generate `eleven_backend.py` and tests
 - `requirements.txt` for local run
 
 ### Architecture at a glance

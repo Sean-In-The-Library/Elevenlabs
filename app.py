@@ -247,7 +247,8 @@ def main():
                         output_format=output_format,
                         voice_settings=voice_settings,
                         seed=seed if seed is not None else None,
-                        language_code=language_code if language_code.strip() else None
+                        language_code=language_code if language_code.strip() else None,
+                        speed=speed
                     )
                     
                     st.success("✅ Speech generated successfully!")

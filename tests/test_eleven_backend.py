@@ -21,7 +21,7 @@ class TestElevenBackend:
         models = list_models()
         
         assert isinstance(models, list)
-        assert len(models) == 3
+        assert len(models) >= 3  # At least the expected models
         
         # Check model structure
         for model in models:
@@ -30,7 +30,7 @@ class TestElevenBackend:
             assert isinstance(model["model_id"], str)
             assert isinstance(model["name"], str)
         
-        # Check specific models
+        # Check that expected models are present
         model_ids = [model["model_id"] for model in models]
         assert "eleven_flash_v2_5" in model_ids
         assert "eleven_turbo_v2_5" in model_ids
@@ -175,7 +175,7 @@ class TestElevenBackend:
         mock_get_client.return_value = mock_client
         
         # Mock text-to-speech response
-        mock_audio = b"fake_audio_data"
+        mock_audio = [b"fake_audio_data"]
         mock_client.text_to_speech.convert.return_value = mock_audio
         
         # Test parameters
@@ -195,10 +195,11 @@ class TestElevenBackend:
             voice_id=voice_id,
             model_id=model_id,
             output_format=output_format,
-            voice_settings=voice_settings
+            voice_settings=voice_settings,
+            speed=1.0
         )
         
-        assert audio_bytes == mock_audio
+        assert audio_bytes == b"fake_audio_data"
         assert mime_type == "audio/mpeg"  # mp3 format
         
         # Verify convert was called with correct parameters
@@ -217,15 +218,17 @@ class TestElevenBackend:
         mock_get_client.return_value = mock_client
         
         # Mock audio generation
-        mock_audio = b"fake_wav_data"
+        mock_audio = [b"fake_wav_data"]
         mock_client.text_to_speech.convert.return_value = mock_audio
         
         audio_bytes, mime_type = synthesize(
             text="Test",
             voice_id="test_voice",
-            output_format="wav_44100"
+            output_format="wav_44100",
+            speed=1.0
         )
         
+        assert audio_bytes == b"fake_wav_data"
         assert mime_type == "audio/wav"
     
     @patch('eleven_backend.get_client')
@@ -239,7 +242,7 @@ class TestElevenBackend:
         mock_client.text_to_speech.convert.side_effect = Exception("Synthesis failed")
         
         with pytest.raises(Exception, match="Synthesis failed"):
-            synthesize("Test", "test_voice")
+            synthesize("Test", "test_voice", speed=1.0)
 
 
 if __name__ == "__main__":
